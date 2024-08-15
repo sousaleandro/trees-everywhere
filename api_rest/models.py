@@ -18,3 +18,11 @@ class Account(models.Model):
 
     def __str__(self):
         return f'Account: {self.name} - Active: {self.active}'
+
+#
+class Plant(models.Model):
+    name = models.CharField(max_length=100)
+    scientific_name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return f'Plant: {self.name} - Scientific name: {self.scientific_name}'

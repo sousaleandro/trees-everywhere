@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Account
+from .models import User, Account, Plant
 
 # Activate accounts action
 def activate_accounts(modeladmin, request, queryset):
@@ -30,5 +30,6 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Account, AccountAdmin)
+admin.site.register(Plant)
 
 admin.site.site_header = 'Trees Everywhere Admin'
