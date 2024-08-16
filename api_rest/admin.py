@@ -20,23 +20,33 @@ class AccountAdmin(admin.ModelAdmin):
     list_editable = ('active',)
     actions = [activate_accounts, deactivate_accounts]
 
-# Add accounts to user in admin page
+# Needed to show accounts in user admin page
 class AccountInline(admin.TabularInline):
     model = Account.users.through
     extra = 1
 
-# Costumization of admin page for users
-class CustomUserAdmin(UserAdmin):
-    inlines = (AccountInline,)
-
-#
-class PlantedTreeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'plant', 'planted_at', 'age', 'account', 'location')
+# Needed to show all planted tree in each plant type
+class PlantedTreeInline(admin.TabularInline):
+    model = PlantedTree
+    extra = 0
+    can_delete = False
     
 
-admin.site.register(User, CustomUserAdmin)
+# Costumization of admin page for users
+class UserAdmin(UserAdmin):
+    inlines = (AccountInline,)
+
+# Costumization of admin page for planted trees
+class PlantedTreeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'plant', 'planted_at', 'age', 'account', 'location')
+
+# Costumization of admin page for plants
+class PlantAdmin(admin.ModelAdmin):
+    inlines = (PlantedTreeInline,)
+
+admin.site.register(User, UserAdmin)
 admin.site.register(Account, AccountAdmin)
-admin.site.register(Plant)
+admin.site.register(Plant, PlantAdmin)
 admin.site.register(PlantedTree, PlantedTreeAdmin)
 
 admin.site.site_header = 'Trees Everywhere Admin'
