@@ -8,8 +8,9 @@ class User(AbstractUser):
     joined = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Username: {self.username}'
+        return f'User: {self.first_name} {self.last_name}'
     
+    # Method to plant a tree
     def plant_tree(self, account, tree_data):
         info, location = tree_data
         PlantedTree.objects.create(
@@ -21,6 +22,7 @@ class User(AbstractUser):
             location=location
         )
     
+    # Method to plant multiple trees
     def plant_trees(self, account, trees_data):
         for tree_data in trees_data:
             info, location = tree_data

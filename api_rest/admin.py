@@ -14,12 +14,6 @@ def deactivate_accounts(modeladmin, request, queryset):
 
 deactivate_accounts.description = 'Deactivate account'
 
-# Costumization of admin page for accounts
-class AccountAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created', 'active')
-    list_editable = ('active',)
-    actions = [activate_accounts, deactivate_accounts]
-
 # Needed to show accounts in user admin page
 class AccountInline(admin.TabularInline):
     model = Account.users.through
@@ -31,6 +25,11 @@ class PlantedTreeInline(admin.TabularInline):
     extra = 0
     can_delete = False
     
+# Costumization of admin page for accounts
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created', 'active')
+    list_editable = ('active',)
+    actions = [activate_accounts, deactivate_accounts]
 
 # Costumization of admin page for users
 class UserAdmin(UserAdmin):
@@ -42,11 +41,12 @@ class PlantedTreeAdmin(admin.ModelAdmin):
 
 # Costumization of admin page for plants
 class PlantAdmin(admin.ModelAdmin):
+    list_display = ('name', 'scientific_name')
     inlines = (PlantedTreeInline,)
 
+# Register models and admin pages
 admin.site.register(User, UserAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Plant, PlantAdmin)
 admin.site.register(PlantedTree, PlantedTreeAdmin)
-
 admin.site.site_header = 'Trees Everywhere Admin'

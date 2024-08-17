@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from .models import Plant, PlantedTree
 
+
+# Login view to authenticate user
 def userLogin(request):
     if request.method == 'GET':
       return render(request, 'login.html')
@@ -21,39 +23,24 @@ def userLogin(request):
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-@api_view(['GET'])
-def get_plants(request):
-    if request.method == 'GET':
-        plants = Plant.objects.all()
-        return Response([{'name': plant.name, 'scientific_name': plant.scientific_name} for plant in plants], status=status.HTTP_200_OK)
-    else:
-        return JsonResponse({'error': 'Invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-@api_view(['GET'])
+# Get all planted trees from authenticated user
 def get_planted_trees(request):
     user = request.user
-    if user.is_authenticated:
-        planted_trees = PlantedTree.objects.filter(user=user)
-        return render(request, 'planted_trees.html', {'planted_trees': planted_trees})
-    else:
+    try:
+        user.is_authenticated
+    except:
         return redirect('login')
-
-
-# @api_view(['POST'])
-# def login(request):
-#     if request.method == 'POST':
-#         username = request.data.get('username')
-#         password = request.data.get('password')
-        
-#         try:
-#             user = User.objects.get(username=username)
-#         except User.DoesNotExist:
-#             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-#         if user.check_password(password):
-#             return Response({'message': 'User logged in'}, status=status.HTTP_200_OK)
-#         else:
-#             return Response({'error': 'Invalid password'}, status=status.HTTP_401_UNAUTHORIZED)
-#     else:
-#         return Response({'error': 'Invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
+    planted_trees = PlantedTree.objects.filter(user=user)
+    return render(request, 'planted_trees.html', {'planted_trees': planted_trees})
+
+# Get details from a planted tree from authenticated user
+def get_planted_tree_details(request, planted_tree_id):
+    user = request.user
+    try:
+        planted_tree = PlantedTree.objects.get(id=planted_tree_id, user=user)
+    except PlantedTree.DoesNotExist: 
+        return Response({'error': 'Plant not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    return render(request, 'planted_tree_details.html', {'planted_tree': planted_tree})

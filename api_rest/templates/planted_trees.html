@@ -12,7 +12,8 @@
         <ul>
             {% for tree in planted_trees %}
                 <li>
-                    Tree: {{ tree.plant.name }} <br>
+                    {{ tree.plant.name }}
+                    <a href="{% url 'planted_tree_details' planted_tree_id=tree.id %}">View Details</a>
                 </li>
             {% endfor %}
         </ul>
