@@ -57,10 +57,10 @@ class Plant(models.Model):
 # PlantedTree model with user, plant, planted_at, age, account and location    
 class PlantedTree(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
-    planted_at = models.DateTimeField()
-    age = models.IntegerField()
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    age = models.IntegerField()
+    planted_at = models.DateTimeField()
     #location is a tuple of latitude and longitude(lat, long) TO BE IMPLEMENTED
     location = models.CharField(max_length=100)
 
