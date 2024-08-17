@@ -7,5 +7,17 @@
 </head>
 <body>
   <h1>Planted Trees</h1>
+
+  {% if planted_trees %}
+        <ul>
+            {% for tree in planted_trees %}
+                <li>
+                    Tree: {{ tree.plant.name }} <br>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Hey, let's plant some trees!</p>
+    {% endif %}
 </body>
 </html>

@@ -1,10 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
-from .models import User, Plant
+from .models import Plant, PlantedTree
 
 def userLogin(request):
     if request.method == 'GET':
@@ -16,7 +16,8 @@ def userLogin(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            return render(request, 'planted_trees.html')
+            planted_trees = PlantedTree.objects.filter(user=user)
+            return render(request, 'planted_trees.html', {'planted_trees': planted_trees})
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -26,9 +27,16 @@ def get_plants(request):
         plants = Plant.objects.all()
         return Response([{'name': plant.name, 'scientific_name': plant.scientific_name} for plant in plants], status=status.HTTP_200_OK)
     else:
-        return Response({'error': 'Invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return JsonResponse({'error': 'Invalid method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
+@api_view(['GET'])
+def get_planted_trees(request):
+    user = request.user
+    if user.is_authenticated:
+        planted_trees = PlantedTree.objects.filter(user=user)
+        return render(request, 'planted_trees.html', {'planted_trees': planted_trees})
+    else:
+        return redirect('login')
 
 
 # @api_view(['POST'])
