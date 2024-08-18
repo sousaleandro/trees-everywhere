@@ -12,10 +12,10 @@ class User(AbstractUser):
     
     # Method to plant a tree
     def plant_tree(self, account, tree_data):
-        info, location = tree_data
+        plant, location = tree_data
         PlantedTree.objects.create(
             user=self,
-            plant=info,
+            plant=plant,
             planted_at=timezone.now(),
             age=0,
             account=account,
@@ -25,10 +25,10 @@ class User(AbstractUser):
     # Method to plant multiple trees
     def plant_trees(self, account, trees_data):
         for tree_data in trees_data:
-            info, location = tree_data
+            plant, location = tree_data
             PlantedTree.objects.create(
                 user=self,
-                plant=info,
+                plant=plant,
                 planted_at=timezone.now(),
                 age=0,
                 account=account,
