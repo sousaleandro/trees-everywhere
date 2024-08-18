@@ -9,6 +9,7 @@
   <h1>Welcome to Trees Everywhere, {{ user.username }}</h1>
 
   <h2>Active Accounts</h2>
+  <p>Select an account to see your planted trees</p>
   <form action="{% url 'home' %}"" method="POST">{% csrf_token %}
     <select id="account" name="account_id">
       {% for account in accounts %}

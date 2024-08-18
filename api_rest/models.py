@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+# from django.contrib.gis.db import models as geo_models
 
 # User model with profile informations such as about and joined
 class User(AbstractUser):
@@ -11,11 +12,10 @@ class User(AbstractUser):
         return f'User: {self.first_name} {self.last_name}'
     
     # Method to plant a tree
-    def plant_tree(self, account, tree_data):
-        plant, location = tree_data
+    def plant_tree(self, tree, location, account):
         PlantedTree.objects.create(
             user=self,
-            plant=plant,
+            tree=tree,
             planted_at=timezone.now(),
             age=0,
             account=account,
@@ -23,12 +23,12 @@ class User(AbstractUser):
         )
     
     # Method to plant multiple trees
-    def plant_trees(self, account, trees_data):
+    def plant_trees(self, trees_data, account):
         for tree_data in trees_data:
-            plant, location = tree_data
+            tree, location = tree_data
             PlantedTree.objects.create(
                 user=self,
-                plant=plant,
+                tree=tree,
                 planted_at=timezone.now(),
                 age=0,
                 account=account,
@@ -46,19 +46,19 @@ class Account(models.Model):
     def __str__(self):
         return f'Account: {self.name} | Active: {self.active}'
 
-# Plant model with name and scientific name
-class Plant(models.Model):
+# Tree model with name and scientific name
+class Tree(models.Model):
     name = models.CharField(max_length=100)
     scientific_name = models.CharField(max_length=100)
     
     def __str__(self):
-        return f'Plant: {self.name} | Scientific name: {self.scientific_name}'
+        return f'Tree: {self.name} | Scientific name: {self.scientific_name}'
 
-# PlantedTree model with user, plant, planted_at, age, account and location    
+# PlantedTree model with user, tree, planted_at, age, account and location    
 class PlantedTree(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    tree = models.ForeignKey(Tree, on_delete=models.CASCADE)
     age = models.IntegerField()
     planted_at = models.DateTimeField()
     #location is a tuple of latitude and longitude(lat, long) TO BE IMPLEMENTED

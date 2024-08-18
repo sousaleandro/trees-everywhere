@@ -7,12 +7,12 @@
 </head>
 <body>
   <h1>Planted Trees</h1>
-
-  {% if planted_trees %}
+    {% if planted_trees %}
         <ul>
-            {% for tree in planted_trees %}
+            {% for planted_tree in planted_trees %}
                 <li>
-                    {{ tree.plant.name }}
+                    <p>{{ planted_tree.tree.name }}</p>
+                    <p>Planted By: {{ planted_tree.user.username }}</p>
                     <a href="{% url 'planted_tree_details' planted_tree_id=tree.id %}">View Details</a>
                 </li>
             {% endfor %}
@@ -20,7 +20,6 @@
     {% else %}
         <p>Hey, let's plant some trees!</p>
     {% endif %}
-
     <a href="{% url 'plant_tree' %}">Plant a Tree</a>
     <br>
     <a href="{% url 'home' %}">Back to Home</a>

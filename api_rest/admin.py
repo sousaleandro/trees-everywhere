@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Account, Plant, PlantedTree
+from .models import User, Account, Tree, PlantedTree
 
 # Activate accounts action
 def activate_accounts(modeladmin, request, queryset):
@@ -19,7 +19,7 @@ class AccountInline(admin.TabularInline):
     model = Account.users.through
     extra = 1
 
-# Needed to show all planted tree in each plant type
+# Needed to show all planted tree in each tree type
 class PlantedTreeInline(admin.TabularInline):
     model = PlantedTree
     extra = 0
@@ -37,16 +37,16 @@ class UserAdmin(UserAdmin):
 
 # Costumization of admin page for planted trees
 class PlantedTreeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'plant', 'planted_at', 'age', 'account', 'location')
+    list_display = ('user', 'tree', 'planted_at', 'age', 'account', 'location')
 
-# Costumization of admin page for plants
-class PlantAdmin(admin.ModelAdmin):
+# Costumization of admin page for trees
+class TreeAdmin(admin.ModelAdmin):
     list_display = ('name', 'scientific_name')
     inlines = (PlantedTreeInline,)
 
 # Register models and admin pages
 admin.site.register(User, UserAdmin)
 admin.site.register(Account, AccountAdmin)
-admin.site.register(Plant, PlantAdmin)
+admin.site.register(Tree, TreeAdmin)
 admin.site.register(PlantedTree, PlantedTreeAdmin)
 admin.site.site_header = 'Trees Everywhere Admin'

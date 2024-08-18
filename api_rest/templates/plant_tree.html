@@ -8,12 +8,10 @@
 <body>
   <h1>Plant a New Tree</h1>
   <form method="POST" action="{% url 'plant_tree' %}">{% csrf_token %}
-
-    <label for="planted_at">Planted At:</label>
-    <label for="plant">Tree:</label>
-    <select id="plant" name="plant" required>
-        {% for plant in plants %}
-            <option value="{{ plant.name }}">{{ plant.name }}</option>
+    <label for="tree">Tree:</label>
+    <select id="tree" name="tree" required>
+        {% for tree in trees %}
+            <option value="{{ tree.name }}">{{ tree.name }}</option>
         {% endfor %}
     </select><br><br>
 
@@ -27,6 +25,10 @@
     <input type="number" step="0.000001" id="longitude" name="longitude" required><br><br> -->
 
     <button type="submit">Plant Tree</button>
+    <br>
+    <a href="{% url 'planted_trees' %}">Back to Planted Trees</a>
+    <br>
+    <a href="{% url 'home' %}">Back to Home</a>
 </form>
 </body>
 </html>

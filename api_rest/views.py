@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
 from .serializer import PlantedTreeSerializer
-from .models import Plant, PlantedTree, Account
+from .models import Tree, PlantedTree, Account
 
 
 # Login view to authenticate user
@@ -59,6 +59,7 @@ def get_planted_trees(request):
     
     account = Account.objects.get(id=account_id)
     planted_trees = PlantedTree.objects.filter(user=user, account=account)
+
     return render(request, 'planted_trees.html', {'planted_trees': planted_trees})
 
 # Get details from a planted tree from authenticated user
@@ -67,29 +68,31 @@ def get_planted_trees(request):
 def get_planted_tree_details(request, planted_tree_id):
     user = request.user
     try:
-        planted_tree = PlantedTree.objects.get(id=planted_tree_id, user=user)
+        planted_tree = PlantedTree.objects.get(id=planted_tree_id)
     except PlantedTree.DoesNotExist: 
-        return Response({'error': 'Plant not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Tree not found'}, status=status.HTTP_404_NOT_FOUND)
 
+    if planted_tree.user != user:
+        return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
     return render(request, 'planted_tree_details.html', {'planted_tree': planted_tree})
 
 # Create a planted tree from authenticated user
 @login_required(login_url='/auth/login/')
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 def plant_tree(request):
     user = request.user
     account_id = request.session.get('selected_account')
 
     if request.method == 'POST':
-        plant_name = request.POST.get('plant')
+        tree_name = request.POST.get('plant')
         location = request.POST.get('location')
-        plant = Plant.objects.get(name=plant_name)
+        tree = Tree.objects.get(name=tree_name)
         account = Account.objects.get(id=account_id)
-        user.plant_tree(account, (plant, location))
+        user.plant_tree(tree, location, account)
         return redirect('planted_trees')
     else:
-        plants = Plant.objects.all()
-        return render(request, 'plant_tree.html', {'plants': plants})
+        trees = Tree.objects.all()
+        return render(request, 'plant_tree.html', {'trees': trees})
     
 # This view is used to return a json with all trees planted by the authenticated user in all accounts
 @login_required(login_url='/auth/login/')
