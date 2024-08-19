@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trees Everywhere</title>
+</head>
+<body>
+  <h1>Welcome to Trees Everywhere, {{ user.username }}</h1>
+
+  {% if planted_trees %}
+    <h2>Check the trees you planted</h2>
+    <ul>
+      {% for planted_tree in planted_trees %}
+        <li>
+            <a href="{% url 'planted_tree_details' planted_tree_id=planted_tree.id %}"><p>{{ planted_tree.tree.name }}</p></a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Unfortunately you haven't planted any trees yet</p>
+  {% endif %}
+
+  <h2>Active Accounts</h2>
+  <form action="{% url 'home' %}"" method="POST">{% csrf_token %}
+    <select id="account" name="account_id">
+      {% for account in accounts %}
+      <option value="{{ account.id }}">{{ account.name }}</option>
+      {% endfor %}
+    </select><br>
+    <p>Select an account and plant some trees</p>
+    <button type="submit">Confirm </button>
+  </form><br>
+  <a href="{% url 'profile' %}">Check Your Profile</a>
+  <br>
+  <a href="{% url 'logout' %}">Log Out</a>
+</body>
+</html>

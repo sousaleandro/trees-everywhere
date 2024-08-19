@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trees Everywhere</title>
+</head>
+
+<body>
+  <h1>Planted Tree Details</h1>
+
+  {% if planted_tree %}
+    <h2>{{ planted_tree.tree.name }}</h2>
+    <p>Planted at: {{ planted_tree.planted_at }}</p>
+    <p>Location: ({{ planted_tree.latitude }}, {{ planted_tree.longitude }})</p>
+    <p>Age: {{planted_tree.age}}</p>
+    <p>Planted by: {{planted_tree.user.username}}</p>
+    <p>Used Account: {{planted_tree.account.name}}</p>
+  {% else %}
+    <p>Tree not found!</p>
+  {% endif %}
+  <br>
+  <a href="{% url 'home' %}">Back to Home</a>
+</body>
+
+</html>
