@@ -121,3 +121,4 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 AUTH_USER_MODEL = 'api_rest.User'
+

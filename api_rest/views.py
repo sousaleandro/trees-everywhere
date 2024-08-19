@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from .serializer import PlantedTreeSerializer
@@ -26,6 +26,12 @@ def userLogin(request):
             return render(request, 'home.html', {'accounts': accounts})
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+# Logout view to logout user
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 # Home view to select an account and see user Profile
 @login_required(login_url='/auth/login/')
