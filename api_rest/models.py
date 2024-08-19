@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-# from django.contrib.gis.db import models as geo_models
+
 
 # User model with profile informations such as about and joined
 class User(AbstractUser):
@@ -10,7 +10,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return f'User: {self.first_name} {self.last_name}'
-    
+
     # Method to plant a tree
     def plant_tree(self, tree, location, account):
         latitude, longitude = location
@@ -23,7 +23,7 @@ class User(AbstractUser):
             latitude=latitude,
             longitude=longitude
         )
-    
+
     # Method to plant multiple trees
     def plant_trees(self, trees_data, account):
         for tree_data in trees_data:
@@ -38,9 +38,10 @@ class User(AbstractUser):
                 latitude=latitude,
                 longitude=longitude
             )
-            
 
-# Account model with name, created date, active status and relationship with users
+
+# Account model with name, created date,
+# active status and relationship with users
 class Account(models.Model):
     name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
@@ -50,15 +51,18 @@ class Account(models.Model):
     def __str__(self):
         return f'Account: {self.name} | Active: {self.active}'
 
+
 # Tree model with name and scientific name
 class Tree(models.Model):
     name = models.CharField(max_length=100)
     scientific_name = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return f'Tree: {self.name} | Scientific name: {self.scientific_name}'
 
-# PlantedTree model with user, tree, planted_at, age, account, latitude and longitude    
+
+# PlantedTree model with user, tree, planted_at,
+# age, account, latitude and longitude
 class PlantedTree(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -69,4 +73,8 @@ class PlantedTree(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0)
 
     def __str__(self):
-        return f'Planted at: {self.planted_at} | Age: {self.age} | Location: ({self.latitude}, {self.longitude}) | User: {self.user.first_name} {self.user.last_name}'
+        return (
+            f'Planted at: {self.planted_at} | Age: {self.age} | '
+            f'Location: ({self.latitude}, {self.longitude}) | '
+            f'User: {self.user.first_name} {self.user.last_name}'
+        )
