@@ -12,11 +12,14 @@ This project was developed as a technical assessment for the role of Junior Back
 ![Django Rest Framework](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray)
 ![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
 
+## Cloning The Repository
+ ```
+git clone git@github.com:sousaleandro/trees-everywhere.git
+cd trees-everywhere
+ ```
 ## Setting Up a Virtual Environment
   ```
   python -m venv .venv
-  ```
-  ```
   source .venv/bin/activate
   ```
 ## Installing Dependencies
