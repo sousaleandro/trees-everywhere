@@ -23,12 +23,15 @@ def userLogin(request):
         if user:
             login(request, user)
             accounts = Account.objects.filter(active=True)
-            return render(request, 'home.html', {'accounts': accounts})
+            planted_trees = PlantedTree.objects.filter(user=user)
+            return render(request, 'home.html', {
+                'accounts': accounts,
+                'planted_trees': planted_trees
+                })
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 # Logout view to logout user
-
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -46,8 +49,8 @@ def home(request):
         user.accounts.add(account)
         return redirect('planted_trees')
     
-    accounts = Account.objects.filter(active=True)
     planted_trees = PlantedTree.objects.filter(user=user)
+    accounts = Account.objects.filter(active=True)
     return render(request, 'home.html',{
         'accounts': accounts,
         'planted_trees': planted_trees
@@ -64,7 +67,6 @@ def get_profile(request):
 @login_required(login_url='/auth/login/')
 @api_view(['GET'])
 def get_planted_trees(request):
-    user = request.user
     account_id = request.session.get('selected_account')
     
     account = Account.objects.get(id=account_id)
