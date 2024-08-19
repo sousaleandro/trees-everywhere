@@ -1,6 +1,6 @@
 # Trees Everywhere
 
-The project was developed as a technical assessment for the position of Junior Backend Developer. 
+This project was developed as a technical assessment for the role of Junior Backend Developer. 
 
 ## Objective
 
