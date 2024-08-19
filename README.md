@@ -25,10 +25,6 @@ This project was developed as a technical assessment for the role of Junior Back
   ```
 ## Starting the Application
   ```
-  python manage.py migrate
-
-  ```
-  ```
   python manage.py runserver
   ```
 ## Running Tests
