@@ -1,10 +1,10 @@
 # Trees Everywhere
 
-Project developed as a technical assessment for the position of Junior Backend Developer. 
+The project was developed as a technical assessment for the position of Junior Backend Developer. 
 
 ## Objective
 
-The goal of **Trees Everywhere** is to create a platform where users can plant and track trees they have planted virtually. Users can manage accounts, track their planted trees, view detailed information about them such as species location, age.
+**Trees Everywhere** aims to create a platform where users from around the world can plant and track trees they have planted virtually. Users can manage accounts, track their planted trees, and view detailed information such as species, location, and age.
   
 ## Technologies Used
 ![Python](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white)
@@ -14,10 +14,10 @@ The goal of **Trees Everywhere** is to create a platform where users can plant a
 
 ## Setting Up a Virtual Environment
   ```
-  python -m venv env
+  python -m venv .venv
   ```
   ```
-  source env/bin/activate
+  source .venv/bin/activate
   ```
 ## Installing Dependencies
   ```
