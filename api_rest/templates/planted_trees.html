@@ -7,13 +7,14 @@
 </head>
 <body>
   <h1>Planted Trees</h1>
+    <h2>Account: {{ account.name }}</h2>
     {% if planted_trees %}
         <ul>
             {% for planted_tree in planted_trees %}
                 <li>
                     <p>{{ planted_tree.tree.name }}</p>
                     <p>Planted By: {{ planted_tree.user.username }}</p>
-                    <a href="{% url 'planted_tree_details' planted_tree_id=tree.id %}">View Details</a>
+                    <a href="{% url 'planted_tree_details' planted_tree_id=planted_tree.id %}">View Details</a>
                 </li>
             {% endfor %}
         </ul>

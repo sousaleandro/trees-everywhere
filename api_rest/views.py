@@ -39,9 +39,13 @@ def home(request):
         request.session['selected_account'] = account_id
         user.accounts.add(account)
         return redirect('planted_trees')
-
+    
     accounts = Account.objects.filter(active=True)
-    return render(request, 'home.html', {'accounts': accounts})
+    planted_trees = PlantedTree.objects.filter(user=user)
+    return render(request, 'home.html',{
+        'accounts': accounts,
+        'planted_trees': planted_trees
+        })
 
 # Profile view to see user information
 @login_required(login_url='/auth/login/')
@@ -58,9 +62,12 @@ def get_planted_trees(request):
     account_id = request.session.get('selected_account')
     
     account = Account.objects.get(id=account_id)
-    planted_trees = PlantedTree.objects.filter(user=user, account=account)
+    planted_trees = PlantedTree.objects.filter(account=account)
 
-    return render(request, 'planted_trees.html', {'planted_trees': planted_trees})
+    return render(request, 'planted_trees.html', {
+        'planted_trees': planted_trees,
+        'account': account,
+        })
 
 # Get details from a planted tree from authenticated user
 @login_required(login_url='/auth/login/')
@@ -84,11 +91,12 @@ def plant_tree(request):
     account_id = request.session.get('selected_account')
 
     if request.method == 'POST':
-        tree_name = request.POST.get('plant')
-        location = request.POST.get('location')
-        tree = Tree.objects.get(name=tree_name)
+        tree_id = request.POST.get('tree_id')
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+        tree = Tree.objects.get(id=tree_id)
         account = Account.objects.get(id=account_id)
-        user.plant_tree(tree, location, account)
+        user.plant_tree(tree, (latitude, longitude), account)
         return redirect('planted_trees')
     else:
         trees = Tree.objects.all()

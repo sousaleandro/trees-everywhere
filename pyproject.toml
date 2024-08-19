@@ -1,0 +1,5 @@
+[
+tool.pytest.ini_options
+]
+DJANGO_SETTINGS_MODULE = "trees_everywhere.settings"
+python_files = ["tests/test_*.py", "tests/*_test.py"]

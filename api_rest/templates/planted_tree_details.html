@@ -13,7 +13,7 @@
   {% if planted_tree %}
     <h2>{{ planted_tree.tree.name }}</h2>
     <p>Planted at: {{ planted_tree.planted_at }}</p>
-    <p>Location: {{ planted_tree.location }}</p>
+    <p>Location: ({{ planted_tree.latitude }}, {{ planted_tree.longitude }})</p>
     <p>Age: {{planted_tree.age}}</p>
     <p>Planted by: {{planted_tree.user.username}}</p>
     <p>Used Account: {{planted_tree.account.name}}</p>

@@ -13,26 +13,30 @@ class User(AbstractUser):
     
     # Method to plant a tree
     def plant_tree(self, tree, location, account):
+        latitude, longitude = location
         PlantedTree.objects.create(
             user=self,
             tree=tree,
             planted_at=timezone.now(),
             age=0,
             account=account,
-            location=location
+            latitude=latitude,
+            longitude=longitude
         )
     
     # Method to plant multiple trees
     def plant_trees(self, trees_data, account):
         for tree_data in trees_data:
             tree, location = tree_data
+            latitude, longitude = location
             PlantedTree.objects.create(
                 user=self,
                 tree=tree,
                 planted_at=timezone.now(),
                 age=0,
                 account=account,
-                location=location
+                latitude=latitude,
+                longitude=longitude
             )
             
 
@@ -54,15 +58,15 @@ class Tree(models.Model):
     def __str__(self):
         return f'Tree: {self.name} | Scientific name: {self.scientific_name}'
 
-# PlantedTree model with user, tree, planted_at, age, account and location    
+# PlantedTree model with user, tree, planted_at, age, account, latitude and longitude    
 class PlantedTree(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     tree = models.ForeignKey(Tree, on_delete=models.CASCADE)
     age = models.IntegerField()
     planted_at = models.DateTimeField()
-    #location is a tuple of latitude and longitude(lat, long) TO BE IMPLEMENTED
-    location = models.CharField(max_length=100)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0)
 
     def __str__(self):
-        return f'Planted at: {self.planted_at} | Age: {self.age} | Location: {self.location} | User: {self.user.first_name} {self.user.last_name}'
+        return f'Planted at: {self.planted_at} | Age: {self.age} | Location: ({self.latitude}, {self.longitude}) | User: {self.user.first_name} {self.user.last_name}'

@@ -37,7 +37,7 @@ class UserAdmin(UserAdmin):
 
 # Costumization of admin page for planted trees
 class PlantedTreeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'tree', 'planted_at', 'age', 'account', 'location')
+    list_display = ('user', 'tree', 'planted_at', 'age', 'account', 'latitude', 'longitude')
 
 # Costumization of admin page for trees
 class TreeAdmin(admin.ModelAdmin):
